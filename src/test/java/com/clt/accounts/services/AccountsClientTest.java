@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @WireMockTest
-public class AccountServiceTest {
+public class AccountsClientTest {
     //TODO: Add checks for request headers
     @Test
     void testRetrieveBalance(WireMockRuntimeInfo wmRuntimeInfo) {
@@ -40,7 +40,7 @@ public class AccountServiceTest {
                 .currency("EUR")
                 .date("2018-08-17")
                 .build();
-        IAccountService service = new AccountService(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
+        IAccountsClient service = new AccountsClient(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
         Mono<BalanceDto> response = service.retrieveBalance(accountId);
         StepVerifier.create(response)
                 .expectNext(expected)
@@ -87,7 +87,7 @@ public class AccountServiceTest {
                             ]
                           }
                                 """)));
-        IAccountService service = new AccountService(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
+        IAccountsClient service = new AccountsClient(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
         Flux<TransactionDto> transactions = service.retrieveTransactions(999L, Date.valueOf(fromDate),
                 Date.valueOf(toDate));
         StepVerifier.create(transactions)

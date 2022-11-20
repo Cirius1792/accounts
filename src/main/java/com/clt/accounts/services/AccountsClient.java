@@ -12,7 +12,7 @@ import com.clt.accounts.dtos.TransactionsDto;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class AccountService implements IAccountService {
+public class AccountsClient implements IAccountsClient {
 
     final String BALANCE_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/balance";
     final String TRANSACTION_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/transactions";
@@ -20,7 +20,7 @@ public class AccountService implements IAccountService {
     final String basePath;
     final WebClient client;
 
-    public AccountService(String basePath, WebClient.Builder clientBuilder) {
+    public AccountsClient(String basePath, WebClient.Builder clientBuilder) {
         this.basePath = basePath;
         this.client = clientBuilder.baseUrl(this.basePath).build();
     }
