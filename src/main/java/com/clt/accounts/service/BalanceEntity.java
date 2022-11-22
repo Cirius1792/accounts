@@ -1,24 +1,19 @@
-package com.clt.accounts.dtos;
+package com.clt.accounts.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-public class BalanceDto {
-    String date;
+public class BalanceEntity {
+    Date date;
     BigDecimal availableBalance;
     BigDecimal balance;
     String currency;

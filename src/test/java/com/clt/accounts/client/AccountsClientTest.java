@@ -1,15 +1,13 @@
-package com.clt.accounts.services;
+package com.clt.accounts.client;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.clt.accounts.dtos.BalanceDto;
-import com.clt.accounts.dtos.TransactionDto;
+import com.clt.accounts.client.dtos.BalanceDto;
+import com.clt.accounts.client.dtos.TransactionDto;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
@@ -40,7 +38,7 @@ public class AccountsClientTest {
                 .currency("EUR")
                 .date("2018-08-17")
                 .build();
-        IAccountsClient service = new AccountsClient(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
+        AccountsClient service = new AccountsClientImpl(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
         Mono<BalanceDto> response = service.retrieveBalance(accountId);
         StepVerifier.create(response)
                 .expectNext(expected)
@@ -87,7 +85,7 @@ public class AccountsClientTest {
                             ]
                           }
                                 """)));
-        IAccountsClient service = new AccountsClient(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
+        AccountsClient service = new AccountsClientImpl(wmRuntimeInfo.getHttpBaseUrl(), WebClient.builder());
         Flux<TransactionDto> transactions = service.retrieveTransactions(999L, Date.valueOf(fromDate),
                 Date.valueOf(toDate));
         StepVerifier.create(transactions)

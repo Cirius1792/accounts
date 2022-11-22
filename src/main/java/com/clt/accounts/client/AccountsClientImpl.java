@@ -1,18 +1,18 @@
-package com.clt.accounts.services;
+package com.clt.accounts.client;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.clt.accounts.dtos.BalanceDto;
-import com.clt.accounts.dtos.TransactionDto;
-import com.clt.accounts.dtos.TransactionsDto;
+import com.clt.accounts.client.dtos.BalanceDto;
+import com.clt.accounts.client.dtos.TransactionDto;
+import com.clt.accounts.client.dtos.TransactionsDto;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class AccountsClient implements IAccountsClient {
+public class AccountsClientImpl implements AccountsClient {
 
     final String BALANCE_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/balance";
     final String TRANSACTION_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/transactions";
@@ -20,14 +20,17 @@ public class AccountsClient implements IAccountsClient {
     final String basePath;
     final WebClient client;
 
-    public AccountsClient(String basePath, WebClient.Builder clientBuilder) {
+    public AccountsClientImpl(String basePath, WebClient.Builder clientBuilder) {
         this.basePath = basePath;
         this.client = clientBuilder.baseUrl(this.basePath).build();
     }
 
     @Override
     public Mono<BalanceDto> retrieveBalance(Long accountId) {
-        return this.client.get().uri(BALANCE_ENDPOINT, accountId).retrieve().bodyToMono(BalanceDto.class);
+        return this.client.get()
+                .uri(BALANCE_ENDPOINT, accountId)
+                .retrieve()
+                .bodyToMono(BalanceDto.class);
     }
 
     @Override
