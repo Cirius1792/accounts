@@ -17,12 +17,17 @@ public class AccountsClientImpl implements AccountsClient {
     final String BALANCE_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/balance";
     final String TRANSACTION_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/transactions";
 
+    static final String AUTH_SCHEMA = "S2S";
+
     final String basePath;
     final WebClient client;
 
-    public AccountsClientImpl(String basePath, WebClient.Builder clientBuilder) {
+    public AccountsClientImpl(String basePath, String apiKey) {
         this.basePath = basePath;
-        this.client = clientBuilder.baseUrl(this.basePath).build();
+        this.client = WebClient.builder()
+                .defaultHeader("Api-Key", apiKey)
+                .defaultHeader("Auth-Schema", AUTH_SCHEMA)
+                .baseUrl(this.basePath).build();
     }
 
     @Override
