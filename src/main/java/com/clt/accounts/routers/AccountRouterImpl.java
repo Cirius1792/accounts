@@ -1,0 +1,67 @@
+package com.clt.accounts.routers;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.util.stream.Collectors;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.RouterFunctions;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+import com.clt.accounts.handlers.responses.BalanceResponse;
+import com.clt.accounts.handlers.responses.TransactionResponse;
+import com.clt.accounts.handlers.responses.TransactionsResponse;
+import com.clt.accounts.service.AccountService;
+
+import reactor.core.publisher.Mono;
+
+@Configuration
+public class AccountRouterImpl {
+        final AccountService accountService;
+        final Clock clock;
+
+        public AccountRouterImpl(AccountService accountService, Clock clock) {
+                this.accountService = accountService;
+                this.clock = clock;
+        }
+
+        Mono<ServerResponse> getBalance(ServerRequest request) {
+                return ServerResponse.ok()
+                                .body(accountService.retrieveBalance()
+                                                .map(balance -> BalanceResponse.builder()
+                                                                .date(balance.getDate())
+                                                                .availableBalance(balance.getAvailableBalance())
+                                                                .balance(balance.getBalance())
+                                                                .currency(balance.getCurrency())
+                                                                .build()),
+                                                BalanceResponse.class);
+        }
+
+        Mono<ServerResponse> getTransactions(ServerRequest request) {
+                LocalDate to = request.queryParam("dateTo").map(LocalDate::parse).orElse(LocalDate.now(clock));
+                LocalDate from = request.queryParam("dateFrom").map(LocalDate::parse).orElse(to);
+                return ServerResponse.ok()
+                                .body(accountService.retrieveTransactions(from, to)
+                                                .map(transaction -> TransactionResponse.builder()
+                                                                .accountingDate(transaction.getAccountingDate())
+                                                                .valueDate(transaction.getValueDate())
+                                                                .amount(transaction.getAmount())
+                                                                .currency(transaction.getCurrency())
+                                                                .description(transaction.getDescription())
+                                                                .build())
+                                                .collect(Collectors.toList())
+                                                .map(transactions -> TransactionsResponse.builder()
+                                                                .transactions(transactions).build()),
+                                                TransactionsResponse.class);
+        }
+
+        RouterFunction<ServerResponse> accountApis() {
+                return RouterFunctions.route()
+                                .path("/balance", builder -> builder
+                                                .GET("", this::getBalance))
+                                .GET("/transactions", this::getTransactions)
+                                .build();
+        }
+}

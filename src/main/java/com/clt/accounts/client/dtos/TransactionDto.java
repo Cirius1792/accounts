@@ -1,9 +1,7 @@
 package com.clt.accounts.client.dtos;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,8 +16,8 @@ public class TransactionDto {
 
     Long transactionId;
     String operationId;
-    Date accountingDate;
-    Date valueDate;
+    LocalDate accountingDate;
+    LocalDate valueDate;
     BigDecimal amount;
     String currency;
     String description;
@@ -38,21 +36,13 @@ public class TransactionDto {
 
     void setAccountingDate(String accountingDate) {
         if (StringUtils.isNotBlank(accountingDate)) {
-            try {
-                this.accountingDate = new SimpleDateFormat(DATE_FORMAT).parse(accountingDate);
-            } catch (ParseException e) {
-                throw new IllegalArgumentException("Date format not supported for date: " + accountingDate);
-            }
+            this.accountingDate = LocalDate.parse(accountingDate);
         }
     }
 
     void setValueDate(String valueDate) {
         if (StringUtils.isNotBlank(valueDate)) {
-            try {
-                this.valueDate = new SimpleDateFormat(DATE_FORMAT).parse(valueDate);
-            } catch (ParseException e) {
-                throw new IllegalArgumentException("Date format not supported for date: " + valueDate);
-            }
+            this.valueDate = LocalDate.parse(valueDate);
         }
     }
 }

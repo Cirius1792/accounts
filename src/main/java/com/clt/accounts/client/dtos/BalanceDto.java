@@ -1,9 +1,7 @@
 package com.clt.accounts.client.dtos;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,13 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BalanceDto {
     public static String DATE_FORMAT = "yyyy-MM-dd";
-    Date date;
+    LocalDate date;
     BigDecimal availableBalance;
     BigDecimal balance;
     String currency;
-    
-    
-    
+
     @Builder
     public BalanceDto(String date, BigDecimal availableBalance, BigDecimal balance, String currency) {
         this.setDate(date);
@@ -28,13 +24,7 @@ public class BalanceDto {
         this.currency = currency;
     }
 
-
-
-    void setDate(String date){
-        try {
-            this.date = new SimpleDateFormat(DATE_FORMAT).parse(date);
-        } catch (ParseException e) {
-            throw new IllegalArgumentException("Date format not supported for date: " + date);
-        }
+    void setDate(String date) {
+        this.date = LocalDate.parse(date);
     }
 }

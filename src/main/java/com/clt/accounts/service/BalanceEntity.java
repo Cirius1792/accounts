@@ -1,7 +1,7 @@
 package com.clt.accounts.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BalanceEntity {
-    Date date;
+    LocalDate date;
     BigDecimal availableBalance;
     BigDecimal balance;
     String currency;

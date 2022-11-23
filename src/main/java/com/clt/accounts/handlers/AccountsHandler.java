@@ -1,6 +1,7 @@
 package com.clt.accounts.handlers;
 
 import com.clt.accounts.handlers.responses.BalanceResponse;
+import com.clt.accounts.handlers.responses.TransactionResponse;
 import com.clt.accounts.service.AccountService;
 
 import reactor.core.publisher.Mono;
@@ -21,4 +22,9 @@ public class AccountsHandler {
                 .currency(balance.getCurrency())
                 .build());
     }
+
+    public Mono<TransactionResponse> getTransactions(String fromDate, String toDate){
+        return null;
+    }
+    
 }

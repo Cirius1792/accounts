@@ -7,14 +7,11 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import com.clt.accounts.client.AccountsClient;
 import com.clt.accounts.client.dtos.BalanceDto;
@@ -38,7 +35,7 @@ public class AccountServiceImplTest {
     @Test
     void testRetrieveBalance() throws ParseException {
         String dateString = "2022-12-31";
-        Date date = new SimpleDateFormat(BalanceDto.DATE_FORMAT).parse(dateString);
+        LocalDate date = LocalDate.parse(dateString);
         BigDecimal balance = BigDecimal.valueOf(99.99);
         BigDecimal availableBalance = BigDecimal.valueOf(98.88);
         String currency = "EUR";
@@ -72,9 +69,8 @@ public class AccountServiceImplTest {
         AccountsClient client = mock(AccountsClient.class);
         AccountService service = new AccountServiceImpl(accountId, client);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat(TransactionDto.DATE_FORMAT);
         String transactionDateString = "2022-01-02";
-        Date transactionDate = dateFormat.parse(transactionDateString);
+        LocalDate transactionDate = LocalDate.parse(transactionDateString);
 
         String currency = "EUR";
 

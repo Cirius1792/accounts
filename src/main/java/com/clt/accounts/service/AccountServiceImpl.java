@@ -1,6 +1,6 @@
 package com.clt.accounts.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.clt.accounts.client.AccountsClient;
 
@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Flux<TransactionEntity> retrieveTransactions(Date fromDate, Date toDate) {
+    public Flux<TransactionEntity> retrieveTransactions(LocalDate fromDate, LocalDate toDate) {
         return this.accountsClient.retrieveTransactions(this.accountNumber, fromDate, toDate)
                 .map(transaction -> TransactionEntity.builder()
                         .accountingDate(transaction.getAccountingDate())

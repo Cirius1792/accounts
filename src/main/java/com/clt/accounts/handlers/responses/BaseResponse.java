@@ -3,7 +3,7 @@ package com.clt.accounts.handlers.responses;
 import lombok.Data;
 
 @Data
-public class BaseResponse {
+public abstract class BaseResponse {
 
     @Data
     class Error {

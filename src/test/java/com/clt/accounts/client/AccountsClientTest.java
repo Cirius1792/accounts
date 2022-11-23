@@ -1,11 +1,7 @@
 package com.clt.accounts.client;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.matches;
-
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
@@ -95,8 +91,8 @@ public class AccountsClientTest {
               }
                     """)));
     AccountsClient service = new AccountsClientImpl(wmRuntimeInfo.getHttpBaseUrl(), apiKey);
-    Flux<TransactionDto> transactions = service.retrieveTransactions(999L, Date.valueOf(fromDate),
-        Date.valueOf(toDate));
+    Flux<TransactionDto> transactions = service.retrieveTransactions(999L, LocalDate.parse(fromDate),
+        LocalDate.parse(toDate));
     StepVerifier.create(transactions)
         .expectNext(TransactionDto.builder()
             .transactionId(1331714087L)

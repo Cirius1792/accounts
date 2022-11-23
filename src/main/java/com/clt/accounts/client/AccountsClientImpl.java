@@ -1,7 +1,6 @@
 package com.clt.accounts.client;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -39,16 +38,16 @@ public class AccountsClientImpl implements AccountsClient {
     }
 
     @Override
-    public Flux<TransactionDto> retrieveTransactions(Long accountId, Date fromAccountingDate, Date toAccountingDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    public Flux<TransactionDto> retrieveTransactions(Long accountId, LocalDate fromAccountingDate,
+            LocalDate toAccountingDate) {
         return this.client.get()
                 .uri(uriBuilder -> uriBuilder.path(TRANSACTION_ENDPOINT)
-                        .queryParam("fromAccountingDate", formatter.format(fromAccountingDate))
-                        .queryParam("toAccountingDate", formatter.format(toAccountingDate))
+                        .queryParam("fromAccountingDate", fromAccountingDate.toString())
+                        .queryParam("toAccountingDate", toAccountingDate.toString())
                         .build(accountId))
                 .retrieve()
                 .bodyToMono(TransactionsDto.class)
-                .flatMapMany(el -> Flux.fromIterable(el.getList())).log();
+                .flatMapMany(el -> Flux.fromIterable(el.getList()));
     }
 
 }
