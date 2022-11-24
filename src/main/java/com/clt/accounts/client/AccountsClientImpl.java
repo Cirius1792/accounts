@@ -15,22 +15,24 @@ import reactor.core.publisher.Mono;
 
 public class AccountsClientImpl implements AccountsClient {
 
+        static final String AUTH_SCHEMA = "S2S";
         final String BALANCE_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/balance";
         final String TRANSACTION_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/transactions";
 
-        static final String AUTH_SCHEMA = "S2S";
 
-        final String basePath;
-        final WebClient client;
         static final ParameterizedTypeReference<ResponseDto<BalanceDto>> typeReferenceBalanceResponse = new ParameterizedTypeReference<ResponseDto<BalanceDto>>() {};
         static final ParameterizedTypeReference<ResponseDto<TransactionsDto>> typeReferenceTransactionsResponse = new ParameterizedTypeReference<ResponseDto<TransactionsDto>>() {};
-
+        
+        final String basePath;
+        final WebClient client;
+        
         public AccountsClientImpl(String basePath, String apiKey) {
                 this.basePath = basePath;
                 this.client = WebClient.builder()
                                 .defaultHeader("Api-Key", apiKey)
                                 .defaultHeader("Auth-Schema", AUTH_SCHEMA)
-                                .baseUrl(this.basePath).build();
+                                .baseUrl(this.basePath)
+                                .build();
         }
 
         @Override
