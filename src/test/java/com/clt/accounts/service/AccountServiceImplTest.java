@@ -14,8 +14,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.clt.accounts.client.AccountsClient;
-import com.clt.accounts.client.dtos.BalanceDto;
-import com.clt.accounts.client.dtos.TransactionDto;
+import com.clt.accounts.client.dto.BalanceDto;
+import com.clt.accounts.client.dto.TransactionDto;
+import com.clt.accounts.component.AccountComponent;
+import com.clt.accounts.component.AccountComponentImpl;
+import com.clt.accounts.component.BalanceEntity;
+import com.clt.accounts.component.TransactionEntity;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -28,7 +32,7 @@ public class AccountServiceImplTest {
     @Test
     void testInitAccountService() {
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> new AccountServiceImpl(null, mock(AccountsClient.class)),
+                () -> new AccountComponentImpl(null, mock(AccountsClient.class)),
                 "Should throw because of missing account number");
     }
 
@@ -56,7 +60,7 @@ public class AccountServiceImplTest {
         AccountsClient client = mock(AccountsClient.class);
         when(client.retrieveBalance(accountId)).thenReturn(Mono.just(dto));
 
-        AccountService service = new AccountServiceImpl(accountId, client);
+        AccountComponent service = new AccountComponentImpl(accountId, client);
         Mono<BalanceEntity> actual = service.retrieveBalance();
 
         StepVerifier.create(actual)
@@ -67,7 +71,7 @@ public class AccountServiceImplTest {
     @Test
     void testRetrieveTransactions() throws ParseException {
         AccountsClient client = mock(AccountsClient.class);
-        AccountService service = new AccountServiceImpl(accountId, client);
+        AccountComponent service = new AccountComponentImpl(accountId, client);
 
         String transactionDateString = "2022-01-02";
         LocalDate transactionDate = LocalDate.parse(transactionDateString);

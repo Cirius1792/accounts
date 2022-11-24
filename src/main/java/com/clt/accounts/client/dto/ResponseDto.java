@@ -1,4 +1,4 @@
-package com.clt.accounts.client.dtos;
+package com.clt.accounts.client.dto;
 
 import java.util.List;
 

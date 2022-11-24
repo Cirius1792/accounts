@@ -5,10 +5,10 @@ import java.time.LocalDate;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.clt.accounts.client.dtos.BalanceDto;
-import com.clt.accounts.client.dtos.ResponseDto;
-import com.clt.accounts.client.dtos.TransactionDto;
-import com.clt.accounts.client.dtos.TransactionsDto;
+import com.clt.accounts.client.dto.BalanceDto;
+import com.clt.accounts.client.dto.ResponseDto;
+import com.clt.accounts.client.dto.TransactionDto;
+import com.clt.accounts.client.dto.TransactionsDto;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ public class AccountsClientImpl implements AccountsClient {
         
         final String basePath;
         final WebClient client;
-        
+
         public AccountsClientImpl(String basePath, String apiKey) {
                 this.basePath = basePath;
                 this.client = WebClient.builder()

@@ -1,4 +1,4 @@
-package com.clt.accounts.routers;
+package com.clt.accounts.router;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -9,18 +9,18 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.clt.accounts.handlers.responses.BalanceResponse;
-import com.clt.accounts.handlers.responses.TransactionResponse;
-import com.clt.accounts.handlers.responses.TransactionsResponse;
-import com.clt.accounts.service.AccountService;
+import com.clt.accounts.component.AccountComponent;
+import com.clt.accounts.router.responses.BalanceResponse;
+import com.clt.accounts.router.responses.TransactionResponse;
+import com.clt.accounts.router.responses.TransactionsResponse;
 
 import reactor.core.publisher.Mono;
 
 public class AccountRouterImpl {
-        final AccountService accountService;
+        final AccountComponent accountService;
         final Clock clock;
 
-        public AccountRouterImpl(AccountService accountService, Clock clock) {
+        public AccountRouterImpl(AccountComponent accountService, Clock clock) {
                 this.accountService = accountService;
                 this.clock = clock;
         }

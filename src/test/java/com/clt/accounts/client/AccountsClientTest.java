@@ -5,8 +5,8 @@ import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
-import com.clt.accounts.client.dtos.BalanceDto;
-import com.clt.accounts.client.dtos.TransactionDto;
+import com.clt.accounts.client.dto.BalanceDto;
+import com.clt.accounts.client.dto.TransactionDto;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;

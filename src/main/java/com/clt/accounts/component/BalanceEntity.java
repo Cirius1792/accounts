@@ -1,4 +1,4 @@
-package com.clt.accounts.service;
+package com.clt.accounts.component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

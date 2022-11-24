@@ -1,24 +1,19 @@
-package com.clt.accounts.handlers.responses;
+package com.clt.accounts.component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class TransactionResponse {
+public class TransactionEntity {
     Long transactionId;
     String operationId;
-    @JsonFormat(pattern="yyyy-MM-dd")
     LocalDate accountingDate;
-    @JsonFormat(pattern="yyyy-MM-dd")
     LocalDate valueDate;
     BigDecimal amount;
     String currency;
     String description;
-    
 }

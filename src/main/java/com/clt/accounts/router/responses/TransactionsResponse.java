@@ -1,4 +1,4 @@
-package com.clt.accounts.handlers.responses;
+package com.clt.accounts.router.responses;
 
 import java.util.List;
 

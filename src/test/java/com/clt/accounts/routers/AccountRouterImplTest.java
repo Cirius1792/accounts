@@ -15,15 +15,16 @@ import org.mockito.Mockito;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.server.RouterFunction;
 
-import com.clt.accounts.service.AccountService;
-import com.clt.accounts.service.BalanceEntity;
-import com.clt.accounts.service.TransactionEntity;
+import com.clt.accounts.component.AccountComponent;
+import com.clt.accounts.component.BalanceEntity;
+import com.clt.accounts.component.TransactionEntity;
+import com.clt.accounts.router.AccountRouterImpl;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class AccountRouterImplTest {
-    AccountService accountService;
+    AccountComponent accountService;
     private WebTestClient client;
     private LocalDate testTime;
     private static String DATE_TIME_FORMAT = "yyyy-MM-dd";
@@ -35,7 +36,7 @@ public class AccountRouterImplTest {
         testTimeString = testTime.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
         Clock clock = Clock.fixed(testTime.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
 
-        accountService = mock(AccountService.class);
+        accountService = mock(AccountComponent.class);
         RouterFunction<?> routes = new AccountRouterImpl(accountService, clock).accountApis();
         client = WebTestClient.bindToRouterFunction(routes)
                 .build();

@@ -1,4 +1,4 @@
-package com.clt.accounts.service;
+package com.clt.accounts.component;
 
 import java.time.LocalDate;
 
@@ -7,12 +7,12 @@ import com.clt.accounts.client.AccountsClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class AccountServiceImpl implements AccountService {
+public class AccountComponentImpl implements AccountComponent {
 
     final AccountsClient accountsClient;
     final Long accountNumber;
 
-    public AccountServiceImpl(Long accountNumber, AccountsClient accountsClient) {
+    public AccountComponentImpl(Long accountNumber, AccountsClient accountsClient) {
         if(accountNumber == null)
             throw new IllegalArgumentException("Account number can't be null");
         this.accountNumber = accountNumber;

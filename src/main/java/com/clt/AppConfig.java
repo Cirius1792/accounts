@@ -10,9 +10,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.clt.accounts.client.AccountsClient;
 import com.clt.accounts.client.AccountsClientImpl;
-import com.clt.accounts.routers.AccountRouterImpl;
-import com.clt.accounts.service.AccountService;
-import com.clt.accounts.service.AccountServiceImpl;
+import com.clt.accounts.component.AccountComponent;
+import com.clt.accounts.component.AccountComponentImpl;
+import com.clt.accounts.router.AccountRouterImpl;
 
 @Configuration
 public class AppConfig {
@@ -24,12 +24,12 @@ public class AppConfig {
     }
 
     @Bean
-    public AccountService accountService(@Value("${accountId}") Long accountId, AccountsClient AccountsClient){
-        return new AccountServiceImpl(accountId, AccountsClient);
+    public AccountComponent accountService(@Value("${accountId}") Long accountId, AccountsClient AccountsClient){
+        return new AccountComponentImpl(accountId, AccountsClient);
     }
 
     @Bean
-    public RouterFunction<ServerResponse> accountApis(AccountService accountService){
+    public RouterFunction<ServerResponse> accountApis(AccountComponent accountService){
         return new AccountRouterImpl(accountService, Clock.systemDefaultZone()).accountApis();
     }
 }
