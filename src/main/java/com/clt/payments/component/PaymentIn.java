@@ -1,4 +1,4 @@
-package com.clt.payments.dtos;
+package com.clt.payments.component;
 
 import java.math.BigDecimal;
 import java.util.Date;

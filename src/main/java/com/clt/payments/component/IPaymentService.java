@@ -1,7 +1,4 @@
-package com.clt.payments.services;
-
-import com.clt.payments.dtos.PaymentIn;
-import com.clt.payments.dtos.PaymentOut;
+package com.clt.payments.component;
 
 import reactor.core.publisher.Mono;
 
