@@ -4,7 +4,6 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -17,7 +16,6 @@ import com.clt.accounts.service.AccountService;
 
 import reactor.core.publisher.Mono;
 
-@Configuration
 public class AccountRouterImpl {
         final AccountService accountService;
         final Clock clock;
@@ -30,6 +28,7 @@ public class AccountRouterImpl {
         Mono<ServerResponse> getBalance(ServerRequest request) {
                 return ServerResponse.ok()
                                 .body(accountService.retrieveBalance()
+                                                .log()
                                                 .map(balance -> BalanceResponse.builder()
                                                                 .date(balance.getDate())
                                                                 .availableBalance(balance.getAvailableBalance())
@@ -57,7 +56,7 @@ public class AccountRouterImpl {
                                                 TransactionsResponse.class);
         }
 
-        RouterFunction<ServerResponse> accountApis() {
+        public RouterFunction<ServerResponse> accountApis() {
                 return RouterFunctions.route()
                                 .path("/balance", builder -> builder
                                                 .GET("", this::getBalance))

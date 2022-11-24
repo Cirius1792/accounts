@@ -28,12 +28,15 @@ public class AccountsClientTest {
         .withHeader("Auth-Schema", WireMock.equalTo(authSchema))
         .willReturn(WireMock.okJson("""
             {
-                "date": "2018-08-17",
-                "balance": 29.64,
-                "availableBalance": 29.64,
-                "currency": "EUR"
-              }
-                """)));
+              "status": "OK",
+              "error": [],
+              "payload":{
+                  "date": "2018-08-17",
+                  "balance": 29.64,
+                  "availableBalance": 29.64,
+                  "currency": "EUR"
+                }
+            }      """)));
     Long accountId = 999L;
     BalanceDto expected = BalanceDto.builder()
         .availableBalance(BigDecimal.valueOf(29.64))
@@ -60,34 +63,38 @@ public class AccountsClientTest {
         .withQueryParam("toAccountingDate", WireMock.equalTo(toDate))
         .willReturn(WireMock.okJson("""
             {
-                "list": [
-                  {
-                    "transactionId": "1331714087",
-                    "operationId": "00000000273015",
-                    "accountingDate": "2019-04-01",
-                    "valueDate": "2019-04-01",
-                    "type": {
-                      "enumeration": "GBS_TRANSACTION_TYPE",
-                      "value": "GBS_TRANSACTION_TYPE_0023"
+              "status": "OK",
+              "error": [],
+              "payload": {
+                  "list": [
+                    {
+                      "transactionId": "1331714087",
+                      "operationId": "00000000273015",
+                      "accountingDate": "2019-04-01",
+                      "valueDate": "2019-04-01",
+                      "type": {
+                        "enumeration": "GBS_TRANSACTION_TYPE",
+                        "value": "GBS_TRANSACTION_TYPE_0023"
+                      },
+                      "amount": -800,
+                      "currency": "EUR",
+                      "description": "BA JOHN DOE PAYMENT INVOICE 75/2017"
                     },
-                    "amount": -800,
-                    "currency": "EUR",
-                    "description": "BA JOHN DOE PAYMENT INVOICE 75/2017"
-                  },
-                  {
-                    "transactionId": "1331714088",
-                    "operationId": "00000000273015",
-                    "accountingDate": "2019-04-01",
-                    "valueDate": "2019-04-01",
-                    "type": {
-                      "enumeration": "GBS_TRANSACTION_TYPE",
-                      "value": "GBS_TRANSACTION_TYPE_0015"
-                    },
-                    "amount": -1,
-                    "currency": "EUR",
-                    "description": "CO MONEY TRANSFER FEES"
-                  }
-                ]
+                    {
+                      "transactionId": "1331714088",
+                      "operationId": "00000000273015",
+                      "accountingDate": "2019-04-01",
+                      "valueDate": "2019-04-01",
+                      "type": {
+                        "enumeration": "GBS_TRANSACTION_TYPE",
+                        "value": "GBS_TRANSACTION_TYPE_0015"
+                      },
+                      "amount": -1,
+                      "currency": "EUR",
+                      "description": "CO MONEY TRANSFER FEES"
+                    }
+                  ]
+                }
               }
                     """)));
     AccountsClient service = new AccountsClientImpl(wmRuntimeInfo.getHttpBaseUrl(), apiKey);

@@ -1,16 +1,35 @@
 package com.clt;
 
+import java.time.Clock;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.clt.configuration.AccountsProperties;
+import com.clt.accounts.client.AccountsClient;
+import com.clt.accounts.client.AccountsClientImpl;
+import com.clt.accounts.routers.AccountRouterImpl;
+import com.clt.accounts.service.AccountService;
+import com.clt.accounts.service.AccountServiceImpl;
 
 @Configuration
 public class AppConfig {
-    
+
+
     @Bean
-    public AccountsProperties accountProperties(@Value("${accountId}") Long accountId){
-        return new AccountsProperties(accountId);
+    public AccountsClient accountsClient(@Value("${clients.accounts.endpoint}") String endpoint, @Value("${clients.apiKey}") String apiKey){
+        return new AccountsClientImpl(endpoint, apiKey);
+    }
+
+    @Bean
+    public AccountService accountService(@Value("${accountId}") Long accountId, AccountsClient AccountsClient){
+        return new AccountServiceImpl(accountId, AccountsClient);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> accountApis(AccountService accountService){
+        return new AccountRouterImpl(accountService, Clock.systemDefaultZone()).accountApis();
     }
 }
