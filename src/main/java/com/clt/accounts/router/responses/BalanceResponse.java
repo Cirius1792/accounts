@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class BalanceResponse extends BaseResponse {
+public class BalanceResponse {
     @JsonFormat(pattern="yyyy-MM-dd")
     LocalDate date;
     BigDecimal availableBalance;
