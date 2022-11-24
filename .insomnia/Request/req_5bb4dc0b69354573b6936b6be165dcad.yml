@@ -1,0 +1,29 @@
+_id: req_5bb4dc0b69354573b6936b6be165dcad
+type: Request
+parentId: fld_690e6f984c6a440aa7e9c5f811eba7bb
+modified: 1669312697622
+created: 1669311078465
+url: http://localhost:8080/transactions
+name: transactions
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_2a6127cd51a047529cfc8fcd0516a4c3
+    name: dateFrom
+    value: 2022-01-02
+    description: ""
+  - id: pair_4440eedbcb9d4fafaa68e47ce954f1c7
+    name: dateTo
+    value: 2022-01-01
+    description: ""
+headers: []
+authentication: {}
+metaSortKey: -1669122930544
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

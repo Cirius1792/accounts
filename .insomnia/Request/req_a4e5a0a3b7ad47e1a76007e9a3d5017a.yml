@@ -1,0 +1,44 @@
+_id: req_a4e5a0a3b7ad47e1a76007e9a3d5017a
+type: Request
+parentId: fld_a70c6a638b7646f3b677c722ba42ce87
+modified: 1669314055203
+created: 1669305203546
+url: "{{ _.base_path }}/api/gbs/banking/v4.0/accounts/{{ _.account_id
+  }}/transactions "
+name: get transactions
+description: ""
+method: GET
+body: {}
+parameters:
+  - id: pair_9116a9be74644182b3745df2f634ec9a
+    name: fromAccountingDate
+    value: 2019-01-01
+    description: ""
+  - id: pair_2991b04b12b44877b7346e56e9c42275
+    name: toAccountingDate
+    value: 2019-12-01
+    description: ""
+headers:
+  - id: pair_98466a83210c4e1ea7173ea354e2aece
+    name: Api-Key
+    value: "{{ _.api_key }}"
+    description: ""
+  - id: pair_1731da880da54c8599f8e99c4fe591a8
+    name: Auth-Schema
+    value: S2S
+    description: ""
+    disabled: false
+  - id: pair_60685a87fbbf4abc82c2ef5ce1f42587
+    name: Content-Type
+    value: application/json
+    description: ""
+    disabled: true
+authentication: {}
+metaSortKey: -1668936656112
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

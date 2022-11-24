@@ -1,0 +1,20 @@
+_id: env_d66c905b1a7349218f017ab788b3a351
+type: Environment
+parentId: env_9f45558060254ba336098691771acf026428c3b1
+modified: 1669313946757
+created: 1668935767433
+name: dev
+data:
+  base_path: https://sandbox.platfr.io
+  producer_id: "3202"
+  api_key: "{% system_env 'API_KEY' %}"
+  account_id: "14537780"
+dataPropertyOrder:
+  "&":
+    - base_path
+    - producer_id
+    - api_key
+    - account_id
+color: null
+isPrivate: false
+metaSortKey: 1668935767433

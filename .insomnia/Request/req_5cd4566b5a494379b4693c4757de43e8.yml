@@ -1,0 +1,25 @@
+_id: req_5cd4566b5a494379b4693c4757de43e8
+type: Request
+parentId: fld_690e6f984c6a440aa7e9c5f811eba7bb
+modified: 1669313733303
+created: 1669309205001
+url: http://localhost:8080/balance"k
+name: balance
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - id: pair_1108f6e022aa45319102ecccdb49cdcf
+    name: ""
+    value: ""
+    description: ""
+authentication: {}
+metaSortKey: -1669309205001
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

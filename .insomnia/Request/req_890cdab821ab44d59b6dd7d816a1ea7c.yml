@@ -1,0 +1,35 @@
+_id: req_890cdab821ab44d59b6dd7d816a1ea7c
+type: Request
+parentId: fld_a70c6a638b7646f3b677c722ba42ce87
+modified: 1669314047014
+created: 1668936656087
+url: "{{ _.base_path }}/api/gbs/banking/v4.0/accounts/{{ _.account_id }}/balance"
+name: account balance
+description: ""
+method: GET
+body: {}
+parameters: []
+headers:
+  - id: pair_98466a83210c4e1ea7173ea354e2aece
+    name: Api-Key
+    value: "{{ _.api_key }}"
+    description: ""
+  - id: pair_1731da880da54c8599f8e99c4fe591a8
+    name: Auth-Schema
+    value: S2S
+    description: ""
+    disabled: false
+  - id: pair_60685a87fbbf4abc82c2ef5ce1f42587
+    name: Content-Type
+    value: application/json
+    description: ""
+    disabled: true
+authentication: {}
+metaSortKey: -1668936656087
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
