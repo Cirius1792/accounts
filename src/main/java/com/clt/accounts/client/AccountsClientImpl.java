@@ -9,6 +9,7 @@ import com.clt.accounts.client.dto.BalanceDto;
 import com.clt.accounts.client.dto.ResponseDto;
 import com.clt.accounts.client.dto.TransactionDto;
 import com.clt.accounts.client.dto.TransactionsDto;
+import com.clt.common.client.WebClientErrorFilter;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,6 +32,7 @@ public class AccountsClientImpl implements AccountsClient {
                 this.client = WebClient.builder()
                                 .defaultHeader("Api-Key", apiKey)
                                 .defaultHeader("Auth-Schema", AUTH_SCHEMA)
+                                .filter(WebClientErrorFilter.errorFilter())
                                 .baseUrl(this.basePath)
                                 .build();
         }

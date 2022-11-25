@@ -3,9 +3,10 @@ package com.clt.payments.client;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.clt.common.client.ResponseDto;
+import com.clt.common.client.WebClientErrorFilter;
 import com.clt.payments.client.dto.PaymentRequestDto;
 import com.clt.payments.client.dto.PaymentResponseDto;
-import com.clt.payments.client.dto.ResponseDto;
 
 import reactor.core.publisher.Mono;
 
@@ -25,6 +26,7 @@ class PaymentClientImpl implements PaymentClient {
                 .defaultHeader("Api-Key", apiKey)
                 .defaultHeader("Auth-Schema", AUTH_SCHEMA)
                 .defaultHeader("X-Time-Zone", zoneId)
+                .filter(WebClientErrorFilter.errorFilter())
                 .baseUrl(this.basePath)
                 .build();
     }

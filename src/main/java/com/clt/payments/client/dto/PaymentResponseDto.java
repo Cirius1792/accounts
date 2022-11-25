@@ -1,5 +1,7 @@
 package com.clt.payments.client.dto;
 
+import com.clt.common.client.ResponseDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

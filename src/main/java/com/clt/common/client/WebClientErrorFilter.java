@@ -1,0 +1,48 @@
+package com.clt.common.client;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+
+import com.clt.common.error.ExternalServiceError;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
+@Slf4j
+public class WebClientErrorFilter {
+
+    static final String DEFAULT_ERROR_CODE = "XX500";
+    static final String DEFAULT_ERROR_DESC = "External Service Error";
+
+    public static ExchangeFilterFunction errorFilter() {
+        return ExchangeFilterFunction.ofResponseProcessor(response -> {
+            return handleErrors(response);
+        });
+    }
+
+    protected static Mono<ClientResponse> handleErrors(ClientResponse response) {
+        if (response.statusCode() != null
+                && (response.statusCode().is4xxClientError() || response.statusCode().is5xxServerError())) {
+            return response.bodyToMono(ResponseDto.class)
+                    .flatMap(body -> {
+                        String errorCode = DEFAULT_ERROR_CODE;
+                        String errorDesc = DEFAULT_ERROR_DESC;
+                        if (!body.getErrors().isEmpty()) {
+                            List<Error> errors = (List<Error>) body.getErrors();
+                            errorCode = errors.stream().map(Error::getCode)
+                                    .collect(Collectors.joining(";"));
+                            errorDesc = errors.stream().map(Error::getDescription)
+                                    .collect(Collectors.joining(";"));
+                        }
+                        log.debug("Error Code is {}", errorCode);
+                        return Mono.error(
+                                new ExternalServiceError(errorCode, errorDesc, response.rawStatusCode()));
+                    });
+        } else {
+            return Mono.just(response);
+        }
+    }
+}
