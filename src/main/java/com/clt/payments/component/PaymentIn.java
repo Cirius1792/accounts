@@ -1,16 +1,14 @@
 package com.clt.payments.component;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
+@AllArgsConstructor
 @Builder
 public class PaymentIn {
     String receiverName;
@@ -18,5 +16,5 @@ public class PaymentIn {
     String description;
     String currency;
     BigDecimal amount;
-    Date executionDate;
+    LocalDate executionDate;
 }

@@ -10,9 +10,9 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.clt.accounts.component.AccountComponent;
-import com.clt.accounts.router.responses.BalanceResponse;
-import com.clt.accounts.router.responses.TransactionResponse;
-import com.clt.accounts.router.responses.TransactionsResponse;
+import com.clt.accounts.router.response.BalanceResponse;
+import com.clt.accounts.router.response.TransactionResponse;
+import com.clt.accounts.router.response.TransactionsResponse;
 
 import reactor.core.publisher.Mono;
 

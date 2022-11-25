@@ -1,4 +1,4 @@
-package com.clt.accounts.router.responses;
+package com.clt.accounts.router.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
