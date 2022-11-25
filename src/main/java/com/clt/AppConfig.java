@@ -12,7 +12,7 @@ import com.clt.accounts.client.AccountsClient;
 import com.clt.accounts.client.AccountsClientImpl;
 import com.clt.accounts.component.AccountComponent;
 import com.clt.accounts.component.AccountComponentImpl;
-import com.clt.accounts.router.AccountRouterImpl;
+import com.clt.accounts.router.AccountRouter;
 
 @Configuration
 public class AppConfig {
@@ -30,6 +30,6 @@ public class AppConfig {
 
     @Bean
     public RouterFunction<ServerResponse> accountApis(AccountComponent accountService){
-        return new AccountRouterImpl(accountService, Clock.systemDefaultZone()).accountApis();
+        return new AccountRouter(accountService, Clock.systemDefaultZone()).accountApis();
     }
 }

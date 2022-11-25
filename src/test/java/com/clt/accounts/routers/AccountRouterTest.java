@@ -17,12 +17,12 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import com.clt.accounts.component.AccountComponent;
 import com.clt.accounts.component.BalanceEntity;
 import com.clt.accounts.component.TransactionEntity;
-import com.clt.accounts.router.AccountRouterImpl;
+import com.clt.accounts.router.AccountRouter;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class AccountRouterImplTest {
+public class AccountRouterTest {
     AccountComponent accountService;
     private WebTestClient client;
     private LocalDate testTime;
@@ -33,7 +33,7 @@ public class AccountRouterImplTest {
         Clock clock = Clock.fixed(testTime.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
 
         accountService = mock(AccountComponent.class);
-        RouterFunction<?> routes = new AccountRouterImpl(accountService, clock).accountApis();
+        RouterFunction<?> routes = new AccountRouter(accountService, clock).accountApis();
         client = WebTestClient.bindToRouterFunction(routes)
                 .build();
     }

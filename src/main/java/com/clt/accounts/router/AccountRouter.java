@@ -16,11 +16,11 @@ import com.clt.accounts.router.responses.TransactionsResponse;
 
 import reactor.core.publisher.Mono;
 
-public class AccountRouterImpl {
+public class AccountRouter {
         final AccountComponent accountService;
         final Clock clock;
 
-        public AccountRouterImpl(AccountComponent accountService, Clock clock) {
+        public AccountRouter(AccountComponent accountService, Clock clock) {
                 this.accountService = accountService;
                 this.clock = clock;
         }
