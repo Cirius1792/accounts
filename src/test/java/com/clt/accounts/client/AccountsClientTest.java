@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import com.clt.accounts.client.dto.BalanceDto;
 import com.clt.accounts.client.dto.TransactionDto;
 import com.clt.common.error.ExternalServiceError;
-import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;

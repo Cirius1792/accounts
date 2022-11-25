@@ -16,10 +16,6 @@ import org.junit.jupiter.api.Test;
 import com.clt.accounts.client.AccountsClient;
 import com.clt.accounts.client.dto.BalanceDto;
 import com.clt.accounts.client.dto.TransactionDto;
-import com.clt.accounts.component.AccountComponent;
-import com.clt.accounts.component.AccountComponentImpl;
-import com.clt.accounts.component.BalanceEntity;
-import com.clt.accounts.component.TransactionEntity;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

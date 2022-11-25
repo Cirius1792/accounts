@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,13 +26,10 @@ public class AccountRouterImplTest {
     AccountComponent accountService;
     private WebTestClient client;
     private LocalDate testTime;
-    private static String DATE_TIME_FORMAT = "yyyy-MM-dd";
-    private String testTimeString;
 
     @BeforeEach
     void setUp() {
         testTime = LocalDate.of(2022, 11, 23);
-        testTimeString = testTime.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
         Clock clock = Clock.fixed(testTime.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
 
         accountService = mock(AccountComponent.class);
