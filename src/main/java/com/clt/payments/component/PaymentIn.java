@@ -14,6 +14,7 @@ import lombok.ToString;
 @Builder
 public class PaymentIn {
     String receiverName;
+    String receiverAccount;
     String description;
     String currency;
     BigDecimal amount;
