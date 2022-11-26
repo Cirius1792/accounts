@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TransactionResponse {
+public class TransactionResponseDto {
     Long transactionId;
     String operationId;
     @JsonFormat(pattern="yyyy-MM-dd")

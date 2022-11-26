@@ -2,11 +2,11 @@ package com.clt.accounts.client;
 
 import java.time.LocalDate;
 
+import com.clt.common.client.ResponseDto;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.clt.accounts.client.dto.BalanceDto;
-import com.clt.accounts.client.dto.ResponseDto;
 import com.clt.accounts.client.dto.TransactionDto;
 import com.clt.accounts.client.dto.TransactionsDto;
 import com.clt.common.client.WebClientErrorFilter;

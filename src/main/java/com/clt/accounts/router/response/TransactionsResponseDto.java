@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class TransactionsResponse {
-    List<TransactionResponse> transactions;
+public class TransactionsResponseDto {
+    List<TransactionResponseDto> transactions;
 
 }

@@ -6,9 +6,9 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.clt.payments.component.PaymentComponent;
-import com.clt.payments.component.PaymentIn;
-import com.clt.payments.router.request.PaymentRequest;
-import com.clt.payments.router.response.PaymentResponse;
+import com.clt.payments.component.PaymentEntity;
+import com.clt.payments.router.request.PaymentRequestDto;
+import com.clt.payments.router.response.PaymentResponseDto;
 
 import reactor.core.publisher.Mono;
 
@@ -21,8 +21,8 @@ public class PaymentRouter {
     }
 
     Mono<ServerResponse> postPayment(ServerRequest request) {
-        return request.bodyToMono(PaymentRequest.class)
-                .map(el -> PaymentIn.builder()
+        return request.bodyToMono(PaymentRequestDto.class)
+                .map(el -> PaymentEntity.builder()
                         .currency(el.getCurrency())
                         .description(el.getDescription())
                         .executionDate(el.getExecutionDate())
@@ -32,11 +32,11 @@ public class PaymentRouter {
                         .build())
                 .flatMap(el -> ServerResponse.ok()
                         .body(paymentComponent.executePayment(el)
-                                .map(out -> PaymentResponse.builder()
+                                .map(out -> PaymentResponseDto.builder()
                                         .moneyTransferId(out.getMoneyTransferId())
                                         .status(out.getStatus())
                                         .build()),
-                                PaymentResponse.class));
+                                PaymentResponseDto.class));
     }
 
     public RouterFunction<ServerResponse> paymentApis() {

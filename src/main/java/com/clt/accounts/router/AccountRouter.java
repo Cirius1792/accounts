@@ -10,9 +10,9 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.clt.accounts.component.AccountComponent;
-import com.clt.accounts.router.response.BalanceResponse;
-import com.clt.accounts.router.response.TransactionResponse;
-import com.clt.accounts.router.response.TransactionsResponse;
+import com.clt.accounts.router.response.BalanceResponseDto;
+import com.clt.accounts.router.response.TransactionResponseDto;
+import com.clt.accounts.router.response.TransactionsResponseDto;
 
 import reactor.core.publisher.Mono;
 
@@ -29,13 +29,13 @@ public class AccountRouter {
                 return ServerResponse.ok()
                                 .body(accountService.retrieveBalance()
                                                 .log()
-                                                .map(balance -> BalanceResponse.builder()
+                                                .map(balance -> BalanceResponseDto.builder()
                                                                 .date(balance.getDate())
                                                                 .availableBalance(balance.getAvailableBalance())
                                                                 .balance(balance.getBalance())
                                                                 .currency(balance.getCurrency())
                                                                 .build()),
-                                                BalanceResponse.class);
+                                                BalanceResponseDto.class);
         }
 
         Mono<ServerResponse> getTransactions(ServerRequest request) {
@@ -43,7 +43,7 @@ public class AccountRouter {
                 LocalDate from = request.queryParam("dateFrom").map(LocalDate::parse).orElse(to);
                 return ServerResponse.ok()
                                 .body(accountService.retrieveTransactions(from, to)
-                                                .map(transaction -> TransactionResponse.builder()
+                                                .map(transaction -> TransactionResponseDto.builder()
                                                                 .accountingDate(transaction.getAccountingDate())
                                                                 .valueDate(transaction.getValueDate())
                                                                 .amount(transaction.getAmount())
@@ -51,9 +51,9 @@ public class AccountRouter {
                                                                 .description(transaction.getDescription())
                                                                 .build())
                                                 .collect(Collectors.toList())
-                                                .map(transactions -> TransactionsResponse.builder()
+                                                .map(transactions -> TransactionsResponseDto.builder()
                                                                 .transactions(transactions).build()),
-                                                TransactionsResponse.class);
+                                                TransactionsResponseDto.class);
         }
 
         public RouterFunction<ServerResponse> accountApis() {

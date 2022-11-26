@@ -20,7 +20,7 @@ public class PaymentComponentImpl implements PaymentComponent {
     }
 
     @Override
-    public Mono<PaymentOut> executePayment(PaymentIn serviceIn) {
+    public Mono<PaymentReceiptEntity> executePayment(PaymentEntity serviceIn) {
         if(serviceIn.getAmount() == null || BigDecimal.ZERO.equals(serviceIn.getAmount()))
             return Mono.error(new IllegalArgumentException("Invalid Amount"));
         if(StringUtils.isBlank(serviceIn.getCurrency()))
@@ -34,7 +34,7 @@ public class PaymentComponentImpl implements PaymentComponent {
                 .currency(serviceIn.getCurrency())
                 .description(serviceIn.getDescription())
                 .build()).map(
-                        response -> PaymentOut.builder()
+                        response -> PaymentReceiptEntity.builder()
                         .direction(response.getDirection())
                         .moneyTransferId(response.getMoneyTransferId())
                         .status(response.getStatus())        

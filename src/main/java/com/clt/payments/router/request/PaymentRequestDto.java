@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentRequest {
+public class PaymentRequestDto {
     String receiverName;
     @NotBlank(message = "The receiver account identifier is required")
     String receiverAccount;

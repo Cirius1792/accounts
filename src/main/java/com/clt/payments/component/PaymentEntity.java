@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class PaymentIn {
+public class PaymentEntity {
     String receiverName;
     String receiverAccount;
     String description;

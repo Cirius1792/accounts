@@ -35,7 +35,7 @@ public class PaymentComponentImplTest {
 
     @Test
     void testExecutePaymentOK() {
-        PaymentIn componentParameters = PaymentIn.builder()
+        PaymentEntity componentParameters = PaymentEntity.builder()
                 .receiverName("Mario Rossi")
                 .receiverAccount("FR7630006000011234567890189")
                 .description("Take My Money")
@@ -43,7 +43,7 @@ public class PaymentComponentImplTest {
                 .currency("EUR")
                 .build();
 
-        Mono<PaymentOut> actual = component.executePayment(componentParameters);
+        Mono<PaymentReceiptEntity> actual = component.executePayment(componentParameters);
 
         StepVerifier.create(actual)
                 .expectNextCount(1)
@@ -52,7 +52,7 @@ public class PaymentComponentImplTest {
 
     @Test
     void testExecutePaymentMissingCurrency() {
-        PaymentIn componentParameters = PaymentIn.builder()
+        PaymentEntity componentParameters = PaymentEntity.builder()
                 .receiverName("Mario Rossi")
                 .receiverAccount("FR7630006000011234567890189")
                 .description("Take My Money")
@@ -65,7 +65,7 @@ public class PaymentComponentImplTest {
 
     @Test
     void testExecutePaymentMissingAmount() {
-        PaymentIn componentParameters = PaymentIn.builder()
+        PaymentEntity componentParameters = PaymentEntity.builder()
                 .receiverName("Mario Rossi")
                 .receiverAccount("FR7630006000011234567890189")
                 .description("Take My Money")
@@ -78,7 +78,7 @@ public class PaymentComponentImplTest {
 
     @Test
     void testExecutePaymentMissingAccount() {
-        PaymentIn componentParameters = PaymentIn.builder()
+        PaymentEntity componentParameters = PaymentEntity.builder()
                 .receiverName("Mario Rossi")
                 .description("Take My Money")
                 .amount(BigDecimal.valueOf(429.00))

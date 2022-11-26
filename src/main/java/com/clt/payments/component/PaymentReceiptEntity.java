@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PaymentOut {
+public class PaymentReceiptEntity {
     String moneyTransferId;
     String status;
     String direction;
