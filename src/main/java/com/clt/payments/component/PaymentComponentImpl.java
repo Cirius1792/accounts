@@ -2,6 +2,8 @@ package com.clt.payments.component;
 
 import java.math.BigDecimal;
 
+import com.clt.payments.client.dto.AccountDto;
+import com.clt.payments.client.dto.CreditorDto;
 import org.apache.commons.lang3.StringUtils;
 
 import com.clt.payments.client.PaymentClient;
@@ -20,24 +22,27 @@ public class PaymentComponentImpl implements PaymentComponent {
     }
 
     @Override
-    public Mono<PaymentReceiptEntity> executePayment(PaymentEntity serviceIn) {
-        if(serviceIn.getAmount() == null || BigDecimal.ZERO.equals(serviceIn.getAmount()))
+    public Mono<PaymentReceiptEntity> executePayment(PaymentEntity paymentEntity) {
+        if (paymentEntity.getAmount() == null || BigDecimal.ZERO.equals(paymentEntity.getAmount()))
             return Mono.error(new IllegalArgumentException("Invalid Amount"));
-        if(StringUtils.isBlank(serviceIn.getCurrency()))
+        if (StringUtils.isBlank(paymentEntity.getCurrency()))
             return Mono.error(new IllegalArgumentException("Missing Currency"));
-        if(StringUtils.isBlank(serviceIn.getReceiverAccount()))
+        if (StringUtils.isBlank(paymentEntity.getReceiverAccount()))
             return Mono.error(new IllegalArgumentException("Missing target account details"));
 
         return paymentClient.postPayment(this.accountNumber, PaymentRequestDto.builder()
-                .receiverName(serviceIn.getReceiverName())
-                .amount(serviceIn.getAmount())
-                .currency(serviceIn.getCurrency())
-                .description(serviceIn.getDescription())
-                .build()).map(
-                        response -> PaymentReceiptEntity.builder()
+                        .creditor(CreditorDto.builder()
+                                .name(paymentEntity.getReceiverName())
+                                .account(AccountDto.builder().accountCode(paymentEntity.getReceiverAccount()).build())
+                                .build())
+                        .amount(paymentEntity.getAmount())
+                        .currency(paymentEntity.getCurrency())
+                        .description(paymentEntity.getDescription())
+                        .build())
+                .map(response -> PaymentReceiptEntity.builder()
                         .direction(response.getDirection())
                         .moneyTransferId(response.getMoneyTransferId())
-                        .status(response.getStatus())        
+                        .status(response.getStatus())
                         .build());
     }
 

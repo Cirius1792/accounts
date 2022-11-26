@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import com.clt.payments.client.dto.AccountDto;
+import com.clt.payments.client.dto.CreditorDto;
 import org.junit.jupiter.api.Test;
 
 import com.clt.payments.client.dto.PaymentRequestDto;
@@ -20,6 +22,20 @@ public class PaymentClientImplTest {
 
     String apiKey = "XXXX";
     String authSchema = "S2S";
+    String paymentRequestBody = """
+            {
+              "creditor": {
+                "name": "%s",
+                "account": {
+                  "accountCode": "%s"
+                }
+              },
+              "executionDate": "%s",
+              "description": "%s",
+              "amount": %s,
+              "currency": "%s"
+            }
+            """;
     String paymentOkBody = """
             {
               "status": "OK",
@@ -83,19 +99,38 @@ public class PaymentClientImplTest {
                 ],
                 "hasTaxRelief": true
               }
-            }      """;
+            }      
+            """;
 
     @Test
     void testPostPayment(WireMockRuntimeInfo wmRuntimeInfo) {
         String accountId = "999";
+        PaymentRequestDto request = PaymentRequestDto.builder()
+                .creditor(CreditorDto.builder()
+                        .name("John Doe")
+                        .account(AccountDto.builder().accountCode("FR7630006000011234567890189").build())
+                        .build())
+                .amount(BigDecimal.valueOf(100.0))
+                .currency("EUR")
+                .description("Gift")
+                .executionDate(LocalDate.now())
+                .build();
+
+        String requestBody = this.prepareRequest(request.getCreditor().getName(),
+                request.getCreditor().getAccount().getAccountCode(),
+                request.getExecutionDate().toString(),
+                request.getDescription(),
+                request.getAmount(),
+                request.getCurrency());
         String zoneId = ZoneId.of(ZoneId.SHORT_IDS.get("ECT")).getId();
         WireMock mockServer = wmRuntimeInfo.getWireMock();
         mockServer.register(
                 WireMock.post(WireMock
-                        .urlMatching("/api/gbs/banking/v4.0/accounts/" + accountId + "/payments/money-transfers"))
+                                .urlMatching("/api/gbs/banking/v4.0/accounts/" + accountId + "/payments/money-transfers"))
                         .withHeader("Api-Key", WireMock.equalTo(apiKey))
                         .withHeader("Auth-Schema", WireMock.equalTo(authSchema))
                         .withHeader("X-Time-Zone", WireMock.equalTo(zoneId))
+                        .withRequestBody(WireMock.equalToJson(requestBody))
                         .willReturn(WireMock.okJson(paymentOkBody)));
 
         PaymentResponseDto expected = PaymentResponseDto.builder()
@@ -104,16 +139,25 @@ public class PaymentClientImplTest {
                 .direction("OUTGOING")
                 .build();
         PaymentClient client = new PaymentClientImpl(wmRuntimeInfo.getHttpBaseUrl(), apiKey, zoneId);
-        PaymentRequestDto request = PaymentRequestDto.builder()
-                .amount(BigDecimal.valueOf(100.0))
-                .currency("EUR")
-                .description("Gift")
-                .receiverName("John Doe")
-                .executionDate(LocalDate.now())
-                .build();
+
         Mono<PaymentResponseDto> actual = client.postPayment(Long.valueOf(accountId), request);
         StepVerifier.create(actual)
                 .expectNext(expected)
                 .verifyComplete();
+    }
+
+    protected String prepareRequest(String creditorName,
+                                    String creditorAccountDetails,
+                                    String executionDate,
+                                    String description,
+                                    BigDecimal amount,
+                                    String currency) {
+        return String.format(paymentRequestBody,
+                creditorName,
+                creditorAccountDetails,
+                executionDate,
+                description,
+                amount,
+                currency);
     }
 }
