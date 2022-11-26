@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.clt.payments.component.PaymentEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,15 @@ public class PaymentRequestDto {
     String currency;
     @NotNull(message = "The amount is required")
     BigDecimal amount;
+
+    public static PaymentEntity fromDto( PaymentRequestDto paymentRequest){
+        return PaymentEntity.builder()
+                .currency(paymentRequest.getCurrency())
+                .description(paymentRequest.getDescription())
+                .executionDate(paymentRequest.getExecutionDate())
+                .receiverAccount(paymentRequest.getReceiverAccount())
+                .receiverName(paymentRequest.getReceiverName())
+                .amount(paymentRequest.getAmount())
+                .build();
+    }
 }
