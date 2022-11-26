@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Error {
+public class ErrorDto {
     String code;
     String description;
     String params;

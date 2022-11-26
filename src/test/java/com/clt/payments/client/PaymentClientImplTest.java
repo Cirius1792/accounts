@@ -149,7 +149,7 @@ public class PaymentClientImplTest {
         String paymentKoBody = """
                 {
                     "status": "OK",
-                    "errors": [
+                    "errorDtos": [
                         {
                             "code": "%s",
                             "description": "Errore tecnico",

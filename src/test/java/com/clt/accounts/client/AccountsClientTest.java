@@ -137,7 +137,7 @@ public class AccountsClientTest {
                 .willReturn(WireMock.jsonResponse(String.format("""
                           {
                             "status": "KO",
-                            "errors": [
+                            "errorDtos": [
                               {
                                 "code": "%s",
                                 "description": "Invalid account identifier",
