@@ -52,9 +52,11 @@ public class AccountRouter {
         return route()
                 .GET("/balance", this::getBalance,
                         ops -> ops.operationId("getBalance")
+                                .tag("Account")
                                 .response(responseBuilder().responseCode("200").implementation(BalanceResponseDto.class)))
                 .GET("/transactions", this::getTransactions,
                         ops -> ops.operationId("getTransactions")
+                                .tag("Account")
                                 .description("Retrieves the transactions for the given period. If no dates are " +
                                         "specified, the transactions performed in the current day are returned by default")
                                 .parameter(parameterBuilder()

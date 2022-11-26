@@ -1,7 +1,6 @@
-package com.clt.common.error;
+package com.clt.common.router;
 
-import java.util.Map;
-
+import com.clt.common.router.response.ErrorResponse;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
@@ -13,17 +12,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.server.RequestPredicates;
-import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
-
+import org.springframework.web.reactive.function.server.*;
 import reactor.core.publisher.Mono;
+
+import java.util.Map;
 
 @Component
 @Order(-2)
 public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHandler {
+    static final String DEFAULT_CODE="AP999";
+    static final String DEFAULT_DESC="Internal Server Error";
+
 
     public GlobalErrorWebExceptionHandler(GlobalErrorAttributes globalErrorAttributes,
             ApplicationContext applicationContext,
@@ -45,6 +44,10 @@ public class GlobalErrorWebExceptionHandler extends AbstractErrorWebExceptionHan
         int statusCode = Integer.parseInt(errorPropertiesMap.getOrDefault(ErrorAttributesKey.STATUS_CODE.getKey(), "500").toString());
         return ServerResponse.status(HttpStatus.valueOf(statusCode))
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(errorPropertiesMap));
+                .body(BodyInserters.fromValue(new ErrorResponse(
+                        errorPropertiesMap.getOrDefault(ErrorAttributesKey.CODE.getKey(), DEFAULT_CODE).toString(),
+                        errorPropertiesMap.getOrDefault(ErrorAttributesKey.DESCRIPTION.getKey(), DEFAULT_DESC).toString())
+                        ))
+                ;
     }
 }

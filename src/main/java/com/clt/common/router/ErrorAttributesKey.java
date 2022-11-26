@@ -1,4 +1,4 @@
-package com.clt.common.error;
+package com.clt.common.router;
 
 import lombok.Getter;
 

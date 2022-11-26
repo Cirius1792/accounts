@@ -59,6 +59,8 @@ public class AccountsClientTest {
         String fromDate = "2019-04-01";
         String toDate = "2019-04-01";
         String testAccount = "998";
+
+
         WireMock mockServer = wmRuntimeInfo.getWireMock();
         mockServer.register(
                 WireMock.get(WireMock.urlPathMatching("/api/gbs/banking/v4.0/accounts/" + testAccount + "/transactions"))
@@ -102,13 +104,17 @@ public class AccountsClientTest {
                                     }
                                   }
                                         """)));
+
+
         AccountsClient service = new AccountsClientImpl(wmRuntimeInfo.getHttpBaseUrl(), apiKey);
+
+
         Flux<TransactionDto> transactions = service.retrieveTransactions(Long.valueOf(testAccount),
                 LocalDate.parse(fromDate),
                 LocalDate.parse(toDate));
         StepVerifier.create(transactions)
                 .expectNext(TransactionDto.builder()
-                                .transactionId(1331714087L)
+                                .transactionId("1331714087")
                                 .operationId("00000000273015")
                                 .accountingDate("2019-04-01")
                                 .valueDate("2019-04-01")
@@ -117,7 +123,7 @@ public class AccountsClientTest {
                                 .description("BA JOHN DOE PAYMENT INVOICE 75/2017")
                                 .build(),
                         TransactionDto.builder()
-                                .transactionId(1331714088L)
+                                .transactionId("1331714088")
                                 .operationId("00000000273015")
                                 .accountingDate("2019-04-01")
                                 .valueDate("2019-04-01")

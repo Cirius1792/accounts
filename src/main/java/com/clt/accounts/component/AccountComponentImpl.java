@@ -36,6 +36,9 @@ public class AccountComponentImpl implements AccountComponent {
             return Flux.error(new IllegalArgumentException("Invalid dates"));
         return this.accountsClient.retrieveTransactions(this.accountNumber, fromDate, toDate)
                 .map(transaction -> TransactionEntity.builder()
+                        .transactionId(transaction.getTransactionId())
+                        .operationId(transaction.getOperationId())
+                        .valueDate(transaction.getValueDate())
                         .accountingDate(transaction.getAccountingDate())
                         .amount(transaction.getAmount())
                         .currency(transaction.getCurrency())

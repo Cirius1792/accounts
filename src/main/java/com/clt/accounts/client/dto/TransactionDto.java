@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class TransactionDto {
     public final static String DATE_FORMAT = "yyyy-MM-dd";
 
-    Long transactionId;
+    String transactionId;
     String operationId;
     LocalDate accountingDate;
     LocalDate valueDate;
@@ -23,7 +23,7 @@ public class TransactionDto {
     String description;
 
     @Builder
-    public TransactionDto(Long transactionId, String operationId, String accountingDate, String valueDate,
+    public TransactionDto(String transactionId, String operationId, String accountingDate, String valueDate,
             BigDecimal amount, String currency, String description) {
         this.transactionId = transactionId;
         this.operationId = operationId;

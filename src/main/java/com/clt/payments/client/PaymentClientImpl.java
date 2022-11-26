@@ -4,7 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.clt.common.client.ResponseDto;
-import com.clt.common.error.WebClientErrorFilter;
+import com.clt.common.router.WebClientErrorFilter;
 import com.clt.payments.client.dto.PaymentRequestDto;
 import com.clt.payments.client.dto.PaymentResponseDto;
 

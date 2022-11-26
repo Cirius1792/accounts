@@ -63,6 +63,7 @@ public class AccountRouterTest {
                 .currency("EUR")
                 .description("Desc")
                 .build();
+
         when(accountService.retrieveTransactions(Mockito.eq(LocalDate.parse(dateFrom)),
                 Mockito.eq(LocalDate.parse(dateTo))))
                 .thenReturn(Flux.just(testTransaction));

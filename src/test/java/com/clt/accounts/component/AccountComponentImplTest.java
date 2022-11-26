@@ -26,14 +26,14 @@ public class AccountComponentImplTest {
         Long accountId = 999L;
 
         @Test
-        void testInitAccountService() {
+        void testInitAccountServiceNoAccount() {
                 Assertions.assertThrows(IllegalArgumentException.class,
                                 () -> new AccountComponentImpl(null, mock(AccountsClient.class)),
                                 "Should throw because of missing account number");
         }
 
         @Test
-        void testRetrieveBalance() throws ParseException {
+        void testRetrieveBalanceOk() throws ParseException {
                 String dateString = "2022-12-31";
                 LocalDate date = LocalDate.parse(dateString);
                 BigDecimal balance = BigDecimal.valueOf(99.99);
@@ -65,7 +65,7 @@ public class AccountComponentImplTest {
         }
 
         @Test
-        void testRetrieveTransactions() throws ParseException {
+        void testRetrieveTransactionsOk() throws ParseException {
                 AccountsClient client = mock(AccountsClient.class);
                 AccountComponent service = new AccountComponentImpl(accountId, client);
 
