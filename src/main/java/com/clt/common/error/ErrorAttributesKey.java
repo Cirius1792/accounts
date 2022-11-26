@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 enum ErrorAttributesKey {
     CODE("code"),
+    STATUS_CODE("status_code"),
     DESCRIPTION("description");
 
     private final String key;

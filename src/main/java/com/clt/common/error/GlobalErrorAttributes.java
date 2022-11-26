@@ -23,11 +23,20 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
         private final List<ExceptionRule> exceptionsRules = List.of(
                         new ExceptionRule(IllegalArgumentException.class, HttpStatus.BAD_REQUEST));
-
+        private final ExceptionRule externalServiceErrorRule = new ExceptionRule(ExternalServiceError.class, HttpStatus.INTERNAL_SERVER_ERROR);
         @Override
         public Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions options) {
                 Throwable error = getError(request);
                 log.error("Intercepted error", error);
+                // Handle External service error in a tailored way to manage the original error code and description
+                if(externalServiceErrorRule.exceptionClass().isInstance(error)){
+                        ExternalServiceError errorInstance = ((ExternalServiceError) error);
+                        return Map.of(
+                                ErrorAttributesKey.STATUS_CODE.getKey(), errorInstance.getStatusCode(),
+                                ErrorAttributesKey.CODE.getKey(), errorInstance.getMessage(),
+                                ErrorAttributesKey.DESCRIPTION.getKey(), errorInstance.getDescription()
+                                );
+                }
                 Optional<ExceptionRule> exceptionRuleOptional = exceptionsRules.stream()
                                 .map(exceptionRule -> exceptionRule.exceptionClass().isInstance(error) ? exceptionRule
                                                 : null)
@@ -36,11 +45,10 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
 
                 return exceptionRuleOptional
                                 .<Map<String, Object>>map(exceptionRule -> Map.of(
-                                                ErrorAttributesKey.CODE.getKey(), exceptionRule.status().value(),
+                                                ErrorAttributesKey.STATUS_CODE.getKey(), exceptionRule.status().value(),
                                                 ErrorAttributesKey.DESCRIPTION.getKey(), error.getMessage()))
                                 .orElseGet(() -> Map.of(
-                                                ErrorAttributesKey.CODE.getKey(),
-                                                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                                                ErrorAttributesKey.STATUS_CODE.getKey(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                                 ErrorAttributesKey.DESCRIPTION.getKey(), error.getMessage()));
         }
 

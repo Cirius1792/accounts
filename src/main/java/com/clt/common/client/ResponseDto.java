@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseDto<T> {
     String status;
-    List<ErrorDto> errorDtos;
+    List<ErrorDto> errors;
     T payload;
 }
