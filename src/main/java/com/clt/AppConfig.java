@@ -50,8 +50,8 @@ public class AppConfig {
     }
 
     @Bean
-    public PaymentClient paymentClient(@Value("${clients.platform.endpoint}") String endpoint, @Value("${clients.apiKey}") String apiKey){
-        return new PaymentClientImpl(endpoint, apiKey, ZoneId.systemDefault().toString());
+    public PaymentClient paymentClient(@Value("${clients.platform.endpoint}") String endpoint, @Value("${clients.apiKey}") String apiKey, @Value("${clients.platform.timezone}") String zone){
+        return new PaymentClientImpl(endpoint, apiKey, zone);
     }
 
     @Bean
