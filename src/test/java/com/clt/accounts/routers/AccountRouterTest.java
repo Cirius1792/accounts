@@ -55,16 +55,32 @@ public class AccountRouterTest {
     void testGetTransactionsReturnsOk() {
         String dateTo = "2022-01-01";
         String dateFrom = "2022-01-02";
+        TransactionEntity testTransaction = TransactionEntity.builder()
+                .transactionId("000000001")
+                .operationId("9999999999")
+                .valueDate(LocalDate.parse("2019-11-09"))
+                .amount(BigDecimal.valueOf(1000000.0))
+                .currency("EUR")
+                .description("Desc")
+                .build();
         when(accountService.retrieveTransactions(Mockito.eq(LocalDate.parse(dateFrom)),
                 Mockito.eq(LocalDate.parse(dateTo))))
-                .thenReturn(Flux.empty());
+                .thenReturn(Flux.just(testTransaction));
 
         client.get().uri(uribuilder -> uribuilder.path("/transactions")
                 .queryParam("dateTo", dateTo)
                 .queryParam("dateFrom", dateFrom)
                 .build())
                 .exchange()
-                .expectStatus().isOk();
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.transactions[0].transactionId").isEqualTo(testTransaction.getTransactionId())
+                .jsonPath("$.transactions[0].operationId").isEqualTo(testTransaction.getOperationId())
+                .jsonPath("$.transactions[0].valueDate").isEqualTo(testTransaction.getValueDate().toString())
+                .jsonPath("$.transactions[0].currency").isEqualTo(testTransaction.getCurrency())
+                .jsonPath("$.transactions[0].description").isEqualTo(testTransaction.getDescription())
+                .jsonPath("$.transactions[0].amount").isEqualTo(testTransaction.getAmount())
+        ;
     }
 
     @Test

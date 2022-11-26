@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Builder
 public class TransactionResponseDto {
-    Long transactionId;
+    String transactionId;
     String operationId;
     @JsonFormat(pattern="yyyy-MM-dd")
     LocalDate accountingDate;
