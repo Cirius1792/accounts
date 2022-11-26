@@ -31,7 +31,7 @@ public class PaymentRouterTest {
 
     @Test
     void testPostPaymentOk() {
-        Double amount = 429.00;
+        double amount = 429.00;
         String receiverName = "Luisa";
         String receiverAccount = "ES7921000813610123456789";
         String currency = "EUR";
@@ -59,5 +59,29 @@ public class PaymentRouterTest {
                         .build()), PaymentRequest.class)
                 .exchange().expectStatus().isOk()
                 .expectBody().jsonPath("$.status").isEqualTo("BOOKED");
+    }
+    @Test
+    void testPostPaymentBadRequest() {
+        double amount = 429.00;
+        String receiverName = "Luisa";
+        String receiverAccount = "ES7921000813610123456789";
+        String currency = "EUR";
+        String executionDate = "2022-12-01";
+        PaymentIn componentParameters = PaymentIn.builder()
+                .amount(BigDecimal.valueOf(amount))
+                .receiverAccount(receiverAccount)
+                .receiverName(receiverName)
+                .currency(currency)
+                .executionDate(LocalDate.parse(executionDate))
+                .build();
+        client.post().uri("/payment")
+                .body(Mono.just(PaymentRequest.builder()
+                        .amount(BigDecimal.valueOf(amount))
+                        .receiverName(receiverName)
+                        .currency(currency)
+                        .executionDate(LocalDate.parse(executionDate))
+                        .build()), PaymentRequest.class)
+                .exchange().expectStatus().is4xxClientError()
+                .expectBody().jsonPath("$.code").isEqualTo("BOOKED");
     }
 }

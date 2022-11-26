@@ -10,7 +10,7 @@ import com.clt.payments.client.dto.PaymentResponseDto;
 
 import reactor.core.publisher.Mono;
 
-class PaymentClientImpl implements PaymentClient {
+public class PaymentClientImpl implements PaymentClient {
 
     final String PAYMENT_ENDPOINT = "/api/gbs/banking/v4.0/accounts/{accountId}/payments/money-transfers";
 
@@ -32,7 +32,7 @@ class PaymentClientImpl implements PaymentClient {
     }
 
     @Override
-    public Mono<PaymentResponseDto> postPayment(String accountId, PaymentRequestDto request) {
+    public Mono<PaymentResponseDto> postPayment(Long accountId, PaymentRequestDto request) {
         return this.client.post()
                 .uri(PAYMENT_ENDPOINT, accountId)
                 .body(Mono.just(request), PaymentRequestDto.class)

@@ -6,5 +6,5 @@ import com.clt.payments.client.dto.PaymentResponseDto;
 import reactor.core.publisher.Mono;
 
 public interface PaymentClient {
-    Mono<PaymentResponseDto> postPayment(String accountId, PaymentRequestDto request);
+    Mono<PaymentResponseDto> postPayment(Long accountId, PaymentRequestDto request);
 }

@@ -37,11 +37,11 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
                 return exceptionRuleOptional
                                 .<Map<String, Object>>map(exceptionRule -> Map.of(
                                                 ErrorAttributesKey.CODE.getKey(), exceptionRule.status().value(),
-                                                ErrorAttributesKey.MESSAGE.getKey(), error.getMessage()))
+                                                ErrorAttributesKey.DESCRIPTION.getKey(), error.getMessage()))
                                 .orElseGet(() -> Map.of(
                                                 ErrorAttributesKey.CODE.getKey(),
                                                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                                                ErrorAttributesKey.MESSAGE.getKey(), error.getMessage()));
+                                                ErrorAttributesKey.DESCRIPTION.getKey(), error.getMessage()));
         }
 
 }

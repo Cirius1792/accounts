@@ -12,9 +12,9 @@ import reactor.core.publisher.Mono;
 public class PaymentComponentImpl implements PaymentComponent {
 
     final PaymentClient paymentClient;
-    final String accountNumber;
+    final Long accountNumber;
 
-    public PaymentComponentImpl(String accountNumber, PaymentClient paymentClient) {
+    public PaymentComponentImpl(Long accountNumber, PaymentClient paymentClient) {
         this.paymentClient = paymentClient;
         this.accountNumber = accountNumber;
     }

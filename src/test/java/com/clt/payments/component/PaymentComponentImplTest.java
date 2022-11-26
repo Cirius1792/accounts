@@ -22,14 +22,15 @@ public class PaymentComponentImplTest {
 
     @BeforeEach
     public void initTest() {
+        Long account = 666L;
         PaymentClient client = mock(PaymentClient.class);
-        when(client.postPayment(eq("666"), any()))
+        when(client.postPayment(eq(account), any()))
                 .thenReturn(Mono.just(PaymentResponseDto.builder()
                         .direction("OUTGOING")
                         .moneyTransferId("XXXX-1")
                         .status("BOOKED")
                         .build()));
-        component = new PaymentComponentImpl("666", client);
+        component = new PaymentComponentImpl(account, client);
     }
 
     @Test

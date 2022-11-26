@@ -111,7 +111,7 @@ public class PaymentClientImplTest {
                 .receiverName("John Doe")
                 .executionDate(LocalDate.now())
                 .build();
-        Mono<PaymentResponseDto> actual = client.postPayment(accountId, request);
+        Mono<PaymentResponseDto> actual = client.postPayment(Long.valueOf(accountId), request);
         StepVerifier.create(actual)
                 .expectNext(expected)
                 .verifyComplete();
