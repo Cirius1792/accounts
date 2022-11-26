@@ -8,6 +8,8 @@ import com.clt.payments.client.PaymentClientImpl;
 import com.clt.payments.component.PaymentComponent;
 import com.clt.payments.component.PaymentComponentImpl;
 import com.clt.payments.router.PaymentRouter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +23,15 @@ import com.clt.accounts.component.AccountComponentImpl;
 import com.clt.accounts.router.AccountRouter;
 
 @Configuration
+@Slf4j
 public class AppConfig {
+
+    @Bean
+    @Qualifier("accountId")
+    public Long accountId(@Value("${accountId}") Long accountId){
+        log.info("Configuring application using account id: {}", accountId);
+        return accountId;
+    }
 
 
     @Bean
@@ -30,7 +40,7 @@ public class AppConfig {
     }
 
     @Bean
-    public AccountComponent accountService(@Value("${accountId}") Long accountId, AccountsClient AccountsClient){
+    public AccountComponent accountService(Long accountId, AccountsClient AccountsClient){
         return new AccountComponentImpl(accountId, AccountsClient);
     }
 
@@ -45,7 +55,7 @@ public class AppConfig {
     }
 
     @Bean
-    public PaymentComponent paymentComponent(@Value("${accountId}") Long accountId, PaymentClient paymentClient){
+    public PaymentComponent paymentComponent(Long accountId, PaymentClient paymentClient){
         return new PaymentComponentImpl(accountId, paymentClient);
     }
 

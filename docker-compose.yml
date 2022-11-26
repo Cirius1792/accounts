@@ -1,0 +1,16 @@
+version: '3.7'
+services:
+  accounts:
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      - API_KEY=${API_KEY}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
