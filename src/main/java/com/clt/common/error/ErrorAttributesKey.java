@@ -2,6 +2,9 @@ package com.clt.common.error;
 
 import lombok.Getter;
 
+/**
+ * Defines the attributes of the returned Error entity in case of exceptions occurred while serving a request
+ */
 @Getter
 enum ErrorAttributesKey {
     CODE("code"),

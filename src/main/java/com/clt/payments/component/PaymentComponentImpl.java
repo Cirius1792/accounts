@@ -20,7 +20,14 @@ public class PaymentComponentImpl implements PaymentComponent {
         this.paymentClient = paymentClient;
         this.accountNumber = accountNumber;
     }
-
+    /**
+     * Given a PaymentEntity containing the minimum set of pieces of information required to issue a payment, the
+     * method returns a PaymentReceiptEntity defining the outcome of the operation
+     * in case of missing required parameters, an error event containing an  IllegalArgumentException is emitted
+     *
+     * @param paymentEntity
+     * @return PaymentReceiptEntity defininf the outcome of the operation
+     */
     @Override
     public Mono<PaymentReceiptEntity> executePayment(PaymentEntity paymentEntity) {
         if (paymentEntity.getAmount() == null || BigDecimal.ZERO.equals(paymentEntity.getAmount()))

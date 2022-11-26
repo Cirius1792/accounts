@@ -6,7 +6,8 @@ if [ -z "$API_KEY" ]; then
 fi
 
 mvn clean package
-if [ -x "$(command -v prr)" ]; then
+
+if [ -x "$(command -v docker)" ]; then
     echo "Executing application by using Docker compose"
     docker compose up --build
 else
