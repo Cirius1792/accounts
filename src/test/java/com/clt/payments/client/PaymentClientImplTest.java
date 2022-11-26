@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+import com.clt.accounts.client.dto.BalanceDto;
+import com.clt.common.error.ExternalServiceError;
 import com.clt.payments.client.dto.AccountDto;
 import com.clt.payments.client.dto.CreditorDto;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,8 @@ public class PaymentClientImplTest {
 
     String apiKey = "XXXX";
     String authSchema = "S2S";
+    String zoneId = ZoneId.of(ZoneId.SHORT_IDS.get("ECT")).getId();
+
     String paymentRequestBody = """
             {
               "creditor": {
@@ -36,6 +40,7 @@ public class PaymentClientImplTest {
               "currency": "%s"
             }
             """;
+
     String paymentOkBody = """
             {
               "status": "OK",
@@ -105,16 +110,7 @@ public class PaymentClientImplTest {
     @Test
     void testPostPayment(WireMockRuntimeInfo wmRuntimeInfo) {
         String accountId = "999";
-        PaymentRequestDto request = PaymentRequestDto.builder()
-                .creditor(CreditorDto.builder()
-                        .name("John Doe")
-                        .account(AccountDto.builder().accountCode("FR7630006000011234567890189").build())
-                        .build())
-                .amount(BigDecimal.valueOf(100.0))
-                .currency("EUR")
-                .description("Gift")
-                .executionDate(LocalDate.now())
-                .build();
+        PaymentRequestDto request = prepareRequestDto();
 
         String requestBody = this.prepareRequest(request.getCreditor().getName(),
                 request.getCreditor().getAccount().getAccountCode(),
@@ -122,7 +118,7 @@ public class PaymentClientImplTest {
                 request.getDescription(),
                 request.getAmount(),
                 request.getCurrency());
-        String zoneId = ZoneId.of(ZoneId.SHORT_IDS.get("ECT")).getId();
+
         WireMock mockServer = wmRuntimeInfo.getWireMock();
         mockServer.register(
                 WireMock.post(WireMock
@@ -144,6 +140,52 @@ public class PaymentClientImplTest {
         StepVerifier.create(actual)
                 .expectNext(expected)
                 .verifyComplete();
+    }
+
+    @Test
+    void testPostPaymentLimitedAccount(WireMockRuntimeInfo wmRuntimeInfo) {
+        PaymentRequestDto request = this.prepareRequestDto();
+        String errorCode = "APIXXX";
+        String paymentKoBody = """
+                {
+                    "status": "OK",
+                    "errors": [
+                        {
+                            "code": "%s",
+                            "description": "Errore tecnico",
+                            "params": ""
+                        }
+                    ],
+                "payload": {}
+                }
+                """;
+
+        WireMock mockServer = wmRuntimeInfo.getWireMock();
+        String accountId = "7";
+        mockServer.register(
+                WireMock.post(WireMock
+                                .urlMatching("/api/gbs/banking/v4.0/accounts/" + accountId + "/payments/money-transfers"))
+                        .willReturn(WireMock.jsonResponse(String.format(paymentKoBody, errorCode), 400)));
+        PaymentClient client = new PaymentClientImpl(wmRuntimeInfo.getHttpBaseUrl(), apiKey, zoneId);
+        Mono<PaymentResponseDto> actual = client.postPayment(Long.valueOf(accountId), request);
+
+        StepVerifier.create(actual)
+                .expectErrorMatches(throwable -> throwable instanceof ExternalServiceError &&
+                        errorCode.equals(throwable.getMessage()))
+                .verify();
+    }
+
+    protected PaymentRequestDto prepareRequestDto() {
+        return PaymentRequestDto.builder()
+                .creditor(CreditorDto.builder()
+                        .name("John Doe")
+                        .account(AccountDto.builder().accountCode("FR7630006000011234567890189").build())
+                        .build())
+                .amount(BigDecimal.valueOf(100.0))
+                .currency("EUR")
+                .description("Gift")
+                .executionDate(LocalDate.now())
+                .build();
     }
 
     protected String prepareRequest(String creditorName,

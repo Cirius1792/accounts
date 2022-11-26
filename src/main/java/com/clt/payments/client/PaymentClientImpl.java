@@ -38,7 +38,7 @@ public class PaymentClientImpl implements PaymentClient {
                 .body(Mono.just(request), PaymentRequestDto.class)
                 .retrieve()
                 .bodyToMono(typeReferencePaymentResponse)
-                .map(el -> el.getPayload());
+                .map(ResponseDto::getPayload);
     }
 
 }
