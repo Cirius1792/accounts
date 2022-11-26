@@ -28,13 +28,7 @@ public class AccountRouter {
     Mono<ServerResponse> getBalance(ServerRequest request) {
         return ServerResponse.ok()
                 .body(accountService.retrieveBalance()
-                                .log()
-                                .map(balance -> BalanceResponseDto.builder()
-                                        .date(balance.getDate())
-                                        .availableBalance(balance.getAvailableBalance())
-                                        .balance(balance.getBalance())
-                                        .currency(balance.getCurrency())
-                                        .build()),
+                                .map(BalanceResponseDto::toDto),
                         BalanceResponseDto.class);
     }
 
@@ -43,15 +37,8 @@ public class AccountRouter {
         LocalDate from = request.queryParam("dateFrom").map(LocalDate::parse).orElse(to);
         return ServerResponse.ok()
                 .body(accountService.retrieveTransactions(from, to)
-                                .map(transaction -> TransactionResponseDto.builder()
-                                        .transactionId(transaction.getTransactionId())
-                                        .operationId(transaction.getOperationId())
-                                        .accountingDate(transaction.getAccountingDate())
-                                        .valueDate(transaction.getValueDate())
-                                        .amount(transaction.getAmount())
-                                        .currency(transaction.getCurrency())
-                                        .description(transaction.getDescription())
-                                        .build())
+                                .log()
+                                .map(TransactionResponseDto::toDto)
                                 .collect(Collectors.toList())
                                 .map(transactions -> TransactionsResponseDto.builder()
                                         .transactions(transactions).build()),
