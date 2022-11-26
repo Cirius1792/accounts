@@ -30,7 +30,7 @@ public class WebClientErrorFilter {
                     .flatMap(body -> {
                         String errorCode = DEFAULT_ERROR_CODE;
                         String errorDesc = DEFAULT_ERROR_DESC;
-                        if (!body.getErrorDtos().isEmpty()) {
+                        if (body.getErrorDtos()!= null && !body.getErrorDtos().isEmpty()) {
                             List<ErrorDto> errorDtos = (List<ErrorDto>) body.getErrorDtos();
                             errorCode = errorDtos.stream().map(ErrorDto::getCode)
                                     .collect(Collectors.joining(";"));
