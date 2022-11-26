@@ -1,12 +1,12 @@
-package com.clt.common.client;
+package com.clt.common.error;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.clt.common.client.ErrorDto;
+import com.clt.common.client.ResponseDto;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
-
-import com.clt.common.error.ExternalServiceError;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
@@ -18,9 +18,7 @@ public class WebClientErrorFilter {
     static final String DEFAULT_ERROR_DESC = "External Service Error";
 
     public static ExchangeFilterFunction errorFilter() {
-        return ExchangeFilterFunction.ofResponseProcessor(response -> {
-            return handleErrors(response);
-        });
+        return ExchangeFilterFunction.ofResponseProcessor(WebClientErrorFilter::handleErrors);
     }
 
     protected static Mono<ClientResponse> handleErrors(ClientResponse response) {

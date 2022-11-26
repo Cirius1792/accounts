@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.clt.accounts.client.dto.BalanceDto;
 import com.clt.accounts.client.dto.TransactionDto;
 import com.clt.accounts.client.dto.TransactionsDto;
-import com.clt.common.client.WebClientErrorFilter;
+import com.clt.common.error.WebClientErrorFilter;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

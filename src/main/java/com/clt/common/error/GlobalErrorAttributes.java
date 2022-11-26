@@ -27,7 +27,6 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         @Override
         public Map<String, Object> getErrorAttributes(ServerRequest request, ErrorAttributeOptions options) {
                 Throwable error = getError(request);
-                log.error("Intercepted error", error);
                 // Handle External service error in a tailored way to manage the original error code and description
                 if(externalServiceErrorRule.exceptionClass().isInstance(error)){
                         ExternalServiceError errorInstance = ((ExternalServiceError) error);
@@ -42,7 +41,9 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
                                                 : null)
                                 .filter(Objects::nonNull)
                                 .findFirst();
-
+                //If the error is managed, there's no need to print the whole stack trace
+                if(exceptionRuleOptional.isEmpty())
+                        log.error("Intercepted Unknown Error", error);
                 return exceptionRuleOptional
                                 .<Map<String, Object>>map(exceptionRule -> Map.of(
                                                 ErrorAttributesKey.STATUS_CODE.getKey(), exceptionRule.status().value(),

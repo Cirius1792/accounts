@@ -45,6 +45,7 @@ public class PaymentComponentImpl implements PaymentComponent {
                         .amount(paymentEntity.getAmount())
                         .currency(paymentEntity.getCurrency())
                         .description(paymentEntity.getDescription())
+                        .executionDate(paymentEntity.getExecutionDate())
                         .build())
                 .map(response -> PaymentReceiptEntity.builder()
                         .direction(response.getDirection())
